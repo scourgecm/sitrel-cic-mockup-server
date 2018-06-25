@@ -6,7 +6,8 @@ var appRouter = function(app) {
     });
 
     app.get('/status/:agent', function(req, res) {
-        return res.send(app.store.getState().users[req.params.agent]);
+        let user = app.store.getState().users[req.params.agent];
+        return res.send(user || 'Sesión no iniciada');
     });
 
     app.get('/connect/:agent/:pass/:station/:host', function(req, res) {
@@ -23,6 +24,10 @@ var appRouter = function(app) {
     app.get('/disconnect/:agent', function(req, res) {
         app.store.dispatch(Actions.logout(req.params.agent));
         return res.send('Solicitud de desconexión iniciada...');
+    });
+
+    app.get('/campaing/list/:agent', function(req, res) {
+        return res.send(app.store.getState().campaigns);
     });
 };
 
