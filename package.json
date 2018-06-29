@@ -4,7 +4,7 @@
   "description": "Intento para simular API de Sitrel-CIC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node ./dist/app.js",
+    "start": "npm run build && node ./dist/app.js",
     "build": "babel src -d dist"
   },
   "author": "Patricio Cornejo",
@@ -12,6 +12,7 @@
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
+    "immutable": "^3.8.2",
     "redux": "^4.0.0"
   },
   "devDependencies": {
