@@ -1,4 +1,5 @@
 import * as Actions from '../store/actions';
+import { injectAsyncCall } from '../helpers/caller';
 
 var appRouter = function(app) {
     app.get('/', function(req, res) {
@@ -39,6 +40,7 @@ var appRouter = function(app) {
         app.store.dispatch(
             Actions.loginCampaing(req.params.agent, req.params.campaing),
         );
+        injectAsyncCall(app.store, req.params.agent, 10);
         return res.send('Conexión en campaña iniciada....');
     });
 

@@ -11,7 +11,7 @@ import { campaings, deudores } from './mock-data';
 const INITIAL_STATE = fromJS({ users: {}, campaings, deudores });
 
 export function discadorApp(state = INITIAL_STATE, action) {
-    return state.set('users', usersReducer(state.get('users'), action));
+    return state.updateIn(['users'], users => usersReducer(users, action));
 }
 
 function usersReducer(state = Map(), action) {
@@ -40,8 +40,16 @@ function usersReducer(state = Map(), action) {
         case LOGOUT_CAMPAING:
             return state.setIn([action.data.agent, 'campaing'], null);
         case INJECT_CALL:
-            console.log('Call injected to user ' + agent);
-            return state;
+            let deudor = state.getIn(['deudores', 0]);
+            return state
+                .updateIn(['users', action.agent], agent => {
+                    agent.set(
+                        'contactData',
+                        fromJS({ is_att_Rut_cliente: deudor }),
+                    );
+                })
+                .updateIn(['deudores'], deudores => deudores.pop())
+                .updateIn(['deudores'], deudores => deudores.push(deudor));
         default:
             return state;
     }
